@@ -68,6 +68,7 @@ def import_packages():
 def import_donnees():
     import pandas as pd
     import geopandas as gpd
+    import numpy as np
     import zipfile
     import os
     import glob
