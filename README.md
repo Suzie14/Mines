@@ -9,3 +9,5 @@ Structure des fichiers :
 
 
 Attention : Parfois certaine commandes du main ne marche pas sans le package openpyxl ( commandes pour l'importer et l'installer : import openpyxl et !pip install openpyxl)
+
+Ne pas executer le notebook Webscraping si vous voulez voir les résultats du webscrapping
