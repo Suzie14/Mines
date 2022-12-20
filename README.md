@@ -2,7 +2,7 @@
 
 Structure des fichiers : 
 - *Main* est le notbook résumant notre travail. Il fait appel aux fichiers Python annexes suivants: 
-    - Pour la récolte des données : fichiers *Webscraping* et *import_preprocess_data*
+    - Pour la récolte des données : fichiers *Webscraping*(notbook aussi) et *import_preprocess_data*
     - Pour la visualisation et certains calculs : *visualisation_stress_mines*
     - Pour la modélisation : *assign_mines* et *comparaison_noms*
 
