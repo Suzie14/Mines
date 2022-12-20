@@ -6,9 +6,9 @@ def clean_strings(df):
     from unidecode import unidecode
     import re
     from re import sub
-    s = df[["localities", "points", "distances"]]
-    s['t1'] = s["localities"].apply(unidecode).str.lower()  # remove accents
-    s['t2'] = s["t1"].str.replace("[^abcdefghijklmnopqrstuvwxyz ]", "").str.strip(' ')
+    s = df[["localities", "points"]]
+    s['t1'] = s["localities"].apply(unidecode).str.lower()  # enleve les caractères spéciaux et accents
+    s['t2'] = s["t1"].str.replace("[^abcdefghijklmnopqrstuvwxyz ]", "").str.strip(' ') # ne conserve que les caractères en minuscule et les espaces
     return s
 
 
