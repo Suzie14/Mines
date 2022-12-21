@@ -1,3 +1,4 @@
+# fonction qui ne garde qu'un point lorsque plusieurs points ont les mêmes coordonnées, puis qui ne garde qu'un point parmi les points qui sont situés à moins d'une distance_max l'un de l'autre. 
 def suppress_duplicates_and_close(test_Chile_copper, distance_max):
     
     import pandas as pd
@@ -29,7 +30,7 @@ def suppress_duplicates_and_close(test_Chile_copper, distance_max):
 
 
 ######################################################################################################################################
-
+#Fonction qui assigne le polygone le plus proche aux points miniers. 
 def add_closest_polygon(points, data_pays_mines, distance_max_mine):
     import pandas as pd
     import geopandas as gpd
@@ -63,7 +64,7 @@ def add_closest_polygon(points, data_pays_mines, distance_max_mine):
     return points_with_poly
 
 ##########################################################################################################################################
-
+# fonction qui exécute les fonctions précédentes de façon à garder la cohérence des paramètres d'entrée.
 def assign_polygons_points(test_Chile_copper, data_pays_mines, distance_max, distance_max_mine):
     import pandas as pd
     import geopandas as gpd
@@ -78,7 +79,7 @@ def assign_polygons_points(test_Chile_copper, data_pays_mines, distance_max, dis
 
 #########################################################################################################################################
 
-
+# focntion qui reprend la fonction dans visualisation_stress_mines.py pour l'adapter au cas d'un seul minéral. 
 def calcul_pourcentages_zones_mineral(scenario, df_test, df_total):
     import pandas as pd
     import geopandas as gpd
