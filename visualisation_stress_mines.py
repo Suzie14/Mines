@@ -1,12 +1,11 @@
 
 
-### choix scénario de stress hydrique et codes couleurs
+### choix scénario de stress hydrique et codes couleurs pour visualisations
 def attribute_colors_to_stress(df_total,scenario):  
     import pandas as pd
     import geopandas as gpd
     import numpy as np
-#scenario = 'ws3038tl'
-    # voir aqueduct_projections_schematic_20140615.xlsx dans le zip pour les scénarii
+
     
     conditions = [
         (df_total[scenario] == 'No data'),
@@ -18,14 +17,13 @@ def attribute_colors_to_stress(df_total,scenario):
         (df_total[scenario] == 'Arid and low water use'),
         ]
     values = ['grey', 'yellow', 'gold', 'orange','darkorange',"orangered", 'maroon']
-    df_total['Color'] = np.select(conditions, values) #ajoute colonne avec couleurs
+    df_total['Color'] = np.select(conditions, values) #ajoute colonne avec couleurs dans le dataframe
     return df_total
 
+#######################################################################################################################
 
-## Pour pourcentages de surfaces dans zones selon stress - Pays séléectionné (Chile)
 
-#df_total_mining = gpd.tools.sjoin(df, df_total, how="left")
-
+# Cette fonction permet d'associer des numéros à chaque valeur de stress, ce qui permet notamment de trier les valeurs dans un dataframe.
 def attribrute_stress_values(pays,scenario, df_total_mining):
     import pandas as pd
     import geopandas as gpd
@@ -42,7 +40,8 @@ def attribrute_stress_values(pays,scenario, df_total_mining):
     values2 = [0, 1, 2, 3, 4, 5, 6]
     
     df_total_mining['value_risk'] = np.select(conditions2, values2)
-
+    
+    #Ensuite on trie les valeurs et on supprime les polygones en doublons, de sorte à garder le niveau de stress le plus pessimiste pour la zone.
     df_test = df_total_mining.sort_values(by='value_risk', ascending = False).drop_duplicates('AREA',keep='first')
     
     if pays=="World":
@@ -54,7 +53,7 @@ def attribrute_stress_values(pays,scenario, df_total_mining):
     return df_clean_pays2
 
 
-
+###################################################################################################################
 
 
 
@@ -62,6 +61,8 @@ def calcul_pourcentages_zones(pays,scenario, df_total_mining):
     import pandas as pd
     import geopandas as gpd
     import numpy as np
+    
+    #Voir fonction ci-dessous pour la suppression des doublons et l'affectation de valeurs numériques au scénario
     df_clean_pays = attribrute_stress_values(pays,scenario, df_total_mining)
 
     grouped_bystress_pays = df_clean_pays.groupby(['value_risk']).sum()
@@ -70,6 +71,7 @@ def calcul_pourcentages_zones(pays,scenario, df_total_mining):
 
     area_stress = [0] * 7
 
+    #Cette boucle permet de réaliser le calcul même s'il n'y a pas de zones dans certains paramètres de stress, dans ce cas la zone est de 0 km². 
     for i in range(7):
         try:
             area_stress[i] = grouped_bystress_pays.AREA[i]
@@ -97,15 +99,16 @@ def calcul_pourcentages_zones(pays,scenario, df_total_mining):
     return results_agregate_pays
 
 
+##################################################################################################################
 
 
 
-
-
+# fonction qui permet, à partir des données mondiales de production, d'extraire de chaque onglet pour un pays sa production en tonnes, sa part de marché mondiale et qui calcule le pourcentage des extractions en volume par type de minéral.
 def shares_prod_country(pays, shares_prod_2020):
     import pandas as pd
     import geopandas as gpd
     import numpy as np
+    
     df_shares_country = {}
 
     dict_of_df = {}
@@ -139,8 +142,8 @@ def shares_prod_country(pays, shares_prod_2020):
     return(res2)
 
 
-
-
+#######################################################################################################################################
+# permet de visualiser le stress hydrique dans le monde.
 def visualisation_zones_stress_monde(scenario, df_total):
     import pandas as pd
     import geopandas as gpd
@@ -161,8 +164,8 @@ def visualisation_zones_stress_monde(scenario, df_total):
     
     return
 
-
-
+#######################################################################################################################################
+# permet de visualiser les zones minières et le stress hydrique pour un pays donné.
 def visualisation_zones_pays(pays,scenario, df, df_total):
     import pandas as pd
     import geopandas as gpd
