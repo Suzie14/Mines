@@ -8,6 +8,9 @@ def import_donnees():
     import os
     import glob
     import io
+    import matplotlib.pyplot as plt
+    import matplotlib.patches as mpatches
+    import matplotlib.lines as mlines
     from io import BytesIO
     from zipfile import ZipFile
     from urllib.request import urlopen
