@@ -1,7 +1,7 @@
 ## Projet Mines et stress hydrique dans le cadre du cours "Python pour la data science"
 
 Structure des fichiers : 
-- *Main* est le notbook résumant notre travail. Il fait appel aux fichiers Python annexes suivants: 
+- *Main* est le notebook résumant notre travail. Il fait appel aux fichiers Python annexes suivants: 
     - Pour la récolte des données : fichiers *Webscraping* (notebook) et *import_preprocess_data*
     - Pour la visualisation et certains calculs : *visualisation_stress_mines*
     - Pour la modélisation : *assign_mines* et *comparaison_noms*
