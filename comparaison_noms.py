@@ -1,3 +1,4 @@
+# fonction qui nettoie les chaînes de caractères (voir Main). 
 def clean_strings(df):
 
     import sys
@@ -13,7 +14,7 @@ def clean_strings(df):
 
 
 ##############################################################################################################################
-
+# fonction qui ajoute les distances minimales entre les chaînes de caractères et les points. 
 def add_columns_with_Lev_distances(s):
     import sys
     import subprocess
