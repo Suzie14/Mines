@@ -181,7 +181,7 @@ def visualisation_zones_pays(pays,scenario, df, df_total):
     df_print = df_print.loc[df_print['name'] == pays]
     base_graphe = df_print.plot(color=df_print['Color'], figsize=(20, 20)) 
     data_country.plot(ax=base_graphe, color = "limegreen")
-    plt.title("Water stress and mines in "+pays+ "(scenario: "+scenario+")")
+    plt.title("Water stress and mines in "+pays+ " (scenario: "+scenario+")")
 
 
 #     fig, ax = plt.subplots()
