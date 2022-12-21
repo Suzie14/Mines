@@ -1,69 +1,4 @@
-# liste des modules et librairies à installer/importer
-def import_packages():
 
-    import sys
-    import subprocess
-    import pandas as pd
-    import numpy as np
-    #!pip install -U scikit-learn
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', '-U scikit-learn'])
-    import sklearn
-    from sklearn.linear_model import LinearRegression
-    import scipy
-    import requests
-    import matplotlib.pyplot as plt
-
-    import json
-    from pandas.io.json import json_normalize
-
-    #pour données géo et visualisations sur cartes
-    
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'geopandas'])
-    #!pip install geopandas
-    import geopandas as gpd
-    #!pip install geoplot 
-    import geoplot
-    import geopandas.tools
-    from shapely.geometry import Point, Polygon
-    #!conda install -c conda-forge geopy --yes
-    #from geopy.geocoders import Nominatim
-    import folium
-
-    
-        #!pip install openpyxl
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'openpyxl'])
-    import openpyxl
-    #!pip install contextily
-    import contextily as ctx
-    import matplotlib.pyplot as plt
-    subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'lxml'])
-    #!pip install lxml
-    import lxml
-    import matplotlib.cm as cm
-    import matplotlib.colors as colors
-
-
-
-    # pour webscrapping
-    #!pip install selenium
-    #subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'selenium'])
-    #import selenium
-    from bs4 import BeautifulSoup
-
-
-    import zipfile
-    import os
-    import glob
-    import io
-
-    # pour obtenir données de Maus, V., Giljum, S., Gutschlhofer, J. et al. A global-scale data set of mining areas. Sci Data 7, 289 (2020). https://doi.org/10.1038/s41597-020-00624-w
-    from io import BytesIO
-    from zipfile import ZipFile
-    from urllib.request import urlopen
-    
-    
-    
-    # parts de production minéraux, par pays
     
 def import_donnees():
     import pandas as pd
@@ -77,12 +12,11 @@ def import_donnees():
     from zipfile import ZipFile
     from urllib.request import urlopen
     
-    
+    # parts de production minéraux, par pays
     url_csv = "https://www.world-mining-data.info/wmd/downloads/XLS/6.5.%20Share_of_World_Mineral_Production_2020_by_Countries.xlsx"
     shares_prod_2020 = pd.ExcelFile(url_csv)
-    # besoin de import geopandas.tools
     
-    # data limites des pays
+    # data limites des pays à partir de geopandas
     countries = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))
 
     # attention correspondance pays
@@ -98,13 +32,14 @@ def import_donnees():
     # correction données : assignation des polygones miniers aux bons pays (voir ex Pologne)
     df =  gpd.tools.sjoin(df, countries, how="left")[['ISO3_CODE', 'COUNTRY_NAME', 'AREA', 'geometry', 'name', 'iso_a3']]
     
-    ### importation data stress hydrique
+    # importation data stress hydrique du WRI
     url_stress = "https://wri-public-data.s3.amazonaws.com/resourcewatch/wat_006_projected_water_stress.zip"
     df_stress = gpd.read_file(url_stress)
+    
+    #plusieurs méthodes permettent de fusionner les différentes données. Ici on utilise df.overlay pour obtenir pour chaque polygone issu du WRI sa localisation dans le monde. 
     df_total = df_stress.overlay(countries, how="intersection")
     
-    df_copper = pd.read_excel(shares_prod_2020, 'Copper')
-    
+    #Ici on crée un dataframe qui associe à chaque polygone minier ses données de stress hydrique. La méthode crée quelques doublons, pour les polygones miniers qui sont à cheval sur plusieurs polygones de stress hydrique ou plusieurs pays, mais pour les usages de df_total_mining cela n'a pas d'importance. Par contre dans la fonction calcul_pourcentages_zones on supprime ces doublons. 
     df_total_mining = gpd.tools.sjoin(df, df_total, how="left")
 
     return shares_prod_2020, countries, dico_correspondance_pays, df, df_stress, df_total, df_stress, df_total_mining
